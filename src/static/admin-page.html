@@ -1,0 +1,100 @@
+<html>
+
+<head>
+    <title>FruitServer</title>
+    <script>
+        // --- --- --- --- --- --- --- ---def
+        url = "http://localhost:8000/fruits/"
+        // --- --- --- --- --- --- --- ---print
+        function print(str) {
+            document.getElementById("printArea").innerHTML = str;
+        }
+        function printResponse(resStr) {
+            document.getElementById("resArea").innerHTML = resStr;
+        }
+        // --- --- --- --- --- --- --- ---GET
+        function getFruits() {
+            fetch(url, { method: 'GET' })
+                .then((res) => {
+                    return res.text();
+                })
+                .then((data) => {
+                    print("GET >> レスポンス");
+                    printResponse(data);
+                })
+                .catch((err) => {
+                    alert(err);
+                });
+        }
+        // --- --- --- --- --- --- --- ---POST
+        function postFruit() {
+            name = document.forms[0].elements[0].value
+            fetch(url, {
+                method: 'POST',
+                body: '{ "name" :"' + name + '"}'
+            })
+                .then((res) => {
+                    return res.text();
+                })
+                .then((data) => {
+                    print("POST >> レスポンス");
+                    printResponse(data);
+                })
+        }
+        // --- --- --- --- --- --- --- ---PUT
+        function putFruit() {
+            id = document.forms[1].elements[0].value
+            country = document.forms[2].elements[0].value
+            fetch(url + String(id), {
+                method: 'PUT',
+                body: '{ "country" :"' + country + '"}'
+            })
+                .then((res) => {
+                    return res.text();
+                })
+                .then((data) => {
+                    print("PUT >> レスポンス");
+                    printResponse(data);
+                })
+        }
+        // --- --- --- --- --- --- --- ---DELETE
+        function deleteFruit() {
+            id = document.forms[3].elements[0].value
+            fetch(url + String(id), {
+                method: 'DELETE',
+            })
+                .then((res) => {
+                    return res.text();
+                })
+                .then((data) => {
+                    print("DELETE >> レスポンス");
+                    printResponse(data);
+                })
+        }
+    </script>
+</head>
+
+<body>
+    <img src="/static/img/fruitserver-header.png" width="30%">
+    <hr>
+    <h2>GET</h2>
+    <button type="button" onclick="getFruits()">リクエスト</button>
+    <hr>
+    <h2>POST</h2>
+    <button type="button" onclick="postFruit()">リクエスト</button>
+    <form>フルーツ名<input type="text" name="postform_name" value="フルーツ名"></form>
+    <hr>
+    <h2>PUT</h2>
+    <button type="button" onclick="putFruit()">リクエスト</button>
+    <form>ID: <input type="text" name="putform_id" value="0"></form>
+    <form>原産国: <input type="text" name="putform_country" size="20" maxlength="15" value="原産国"></form>
+    <hr>
+    <h2>DELETE</h2>
+    <button type="button" onclick="deleteFruit()">リクエスト</button>
+    <form>ID: <input type="text" name="deleteform_id" size="20" maxlength="15" value="0"></form>
+    <hr>
+    <h3 id="printArea">レスポンス</h3>
+    <div id="resArea"></div>
+</body>
+
+</html>
